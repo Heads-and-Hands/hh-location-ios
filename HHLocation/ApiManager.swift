@@ -6,45 +6,44 @@
 //  Copyright © 2018 HeadsAndHands. All rights reserved.
 //
 
-import UIKit
 import Alamofire
+import UIKit
 
 protocol ApiManagerDelegate: class {
-    func updateBeaconsParameters(beaconsParameters: [BeaconParameters])
+    func updateBeaconsParameters(beaconsParameters: [Beacon])
     func presentAlert(title: String, message: String, reloadFunction: ((UIAlertAction) -> Void)?)
 }
 
 class ApiManager {
-    
-    var delegate: ApiManagerDelegate?
-    
+    weak var delegate: ApiManagerDelegate?
+
     func requestBeaconParametrs() {
-        request("http://d.handh.ru:8887/beacon?token=fsdf", method: .get) .responseJSON { responseJSON in
-            
+        request("http://d.handh.ru:8887/beacon?token=fsdf", method: .get).responseJSON { responseJSON in
+
             switch responseJSON.result {
-            case .success(let value):
-                
-                guard let jsonArray = value as? Array<[String: Any]> else { return }
-                
-                var beaconsParameters: [BeaconParameters] = []
-                
+            case let .success(value):
+
+                guard let jsonArray = value as? [[String: Any]] else { return }
+
+                var beaconsParameters: [Beacon] = []
+
                 for jsonObject in jsonArray {
                     guard
-                        let id = jsonObject["ID"] as? NSNumber,
-                        let uId = jsonObject["Uid"] as? NSNumber,
+                        let id = jsonObject["ID"] as? Int,
+                        let uId = jsonObject["Uid"] as? Int,
                         let name = jsonObject["Name"] as? String,
                         let correction = jsonObject["Correction"] as? Int,
                         let posX = jsonObject["PosX"] as? Double,
                         let posY = jsonObject["PosY"] as? Double
                         else {
-                            return
+                        return
                     }
-                    let beaconParameters = BeaconParameters.init(id: id, uId: uId, name: name, correction: correction, posX: posX, posY: posY)
+                    let beaconParameters = Beacon(id: id, uId: uId, name: name, correction: correction, posX: posX, posY: posY)
                     beaconsParameters.append(beaconParameters)
                 }
                 self.delegate?.updateBeaconsParameters(beaconsParameters: beaconsParameters)
-                
-            case .failure(let error):
+
+            case let .failure(error):
                 print("Error: \(error.localizedDescription)")
                 self.delegate?.presentAlert(title: "Error", message: error.localizedDescription, reloadFunction: { _ in
                     self.requestBeaconParametrs()
@@ -52,15 +51,15 @@ class ApiManager {
             }
         }
     }
-    
+
     func sendLocation(posX: Double, posY: Double) {
         if let deviceId = UIDevice.current.identifierForVendor?.uuidString {
-            let parameters: [String : Any] = ["DeviceId": deviceId,
-                                              "PosX": posX,
-                                              "PosY": posY]
-            
+            let parameters: [String: Any] = ["UID": deviceId,
+                                             "PosX": posX,
+                                             "PosY": posY]
+
             request("http://d.handh.ru:8887/position?token=fsdf", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil).response { response in
-                
+
                 if let error = response.error {
                     print("Error: \(error.localizedDescription)")
                     self.delegate?.presentAlert(title: "Error", message: error.localizedDescription, reloadFunction: { _ in
@@ -70,7 +69,7 @@ class ApiManager {
             }
         } else {
             print("Error: Unable to send location data")
-            self.delegate?.presentAlert(title: "Error", message: "Unable to send location data", reloadFunction: { _ in
+            delegate?.presentAlert(title: "Error", message: "Unable to send location data", reloadFunction: { _ in
                 self.sendLocation(posX: posX, posY: posY)
             })
         }

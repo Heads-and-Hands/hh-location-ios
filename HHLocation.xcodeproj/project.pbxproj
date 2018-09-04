@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B8DCA00362FEC47986DA7DA6 /* Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCA5D550ED61D609FD3091 /* Signal.swift */; };
+		B8DCA2D046ECA65B69FA42E2 /* Beacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCA4BD58BCE5746C5E0809 /* Beacon.swift */; };
 		EF55C62D213D87240088329C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C62C213D87240088329C /* AppDelegate.swift */; };
 		EF55C62F213D87240088329C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C62E213D87240088329C /* ViewController.swift */; };
 		EF55C632213D87240088329C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF55C630213D87240088329C /* Main.storyboard */; };
@@ -15,12 +17,12 @@
 		EF55C65D213D89480088329C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF55C65C213D89480088329C /* CoreLocation.framework */; };
 		EF55C65F213D89620088329C /* KalmanFilter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF55C65E213D89620088329C /* KalmanFilter.framework */; };
 		EF55C661213D89670088329C /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF55C660213D89670088329C /* Alamofire.framework */; };
-		EF55C663213D89C40088329C /* BeaconParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C662213D89C40088329C /* BeaconParameters.swift */; };
 		EF55C665213D89FE0088329C /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C664213D89FE0088329C /* ApiManager.swift */; };
-		EF55C667213D8A2F0088329C /* SignalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C666213D8A2F0088329C /* SignalModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B8DCA4BD58BCE5746C5E0809 /* Beacon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Beacon.swift; sourceTree = "<group>"; };
+		B8DCA5D550ED61D609FD3091 /* Signal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Signal.swift; sourceTree = "<group>"; };
 		EF55C629213D87240088329C /* HHLocation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HHLocation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF55C62C213D87240088329C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EF55C62E213D87240088329C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -31,9 +33,7 @@
 		EF55C65C213D89480088329C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		EF55C65E213D89620088329C /* KalmanFilter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KalmanFilter.framework; path = Carthage/Build/iOS/KalmanFilter.framework; sourceTree = "<group>"; };
 		EF55C660213D89670088329C /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
-		EF55C662213D89C40088329C /* BeaconParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconParameters.swift; sourceTree = "<group>"; };
 		EF55C664213D89FE0088329C /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
-		EF55C666213D8A2F0088329C /* SignalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +50,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B8DCAF4D7A678D8BA3FE2A7E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B8DCA5D550ED61D609FD3091 /* Signal.swift */,
+				B8DCA4BD58BCE5746C5E0809 /* Beacon.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		EF55C620213D87240088329C = {
 			isa = PBXGroup;
 			children = (
@@ -72,13 +81,12 @@
 			children = (
 				EF55C62C213D87240088329C /* AppDelegate.swift */,
 				EF55C62E213D87240088329C /* ViewController.swift */,
-				EF55C662213D89C40088329C /* BeaconParameters.swift */,
 				EF55C664213D89FE0088329C /* ApiManager.swift */,
-				EF55C666213D8A2F0088329C /* SignalModel.swift */,
 				EF55C630213D87240088329C /* Main.storyboard */,
 				EF55C633213D87290088329C /* Assets.xcassets */,
 				EF55C635213D87290088329C /* LaunchScreen.storyboard */,
 				EF55C638213D87290088329C /* Info.plist */,
+				B8DCAF4D7A678D8BA3FE2A7E /* Models */,
 			);
 			path = HHLocation;
 			sourceTree = "<group>";
@@ -193,9 +201,9 @@
 			files = (
 				EF55C665213D89FE0088329C /* ApiManager.swift in Sources */,
 				EF55C62F213D87240088329C /* ViewController.swift in Sources */,
-				EF55C663213D89C40088329C /* BeaconParameters.swift in Sources */,
-				EF55C667213D8A2F0088329C /* SignalModel.swift in Sources */,
 				EF55C62D213D87240088329C /* AppDelegate.swift in Sources */,
+				B8DCA00362FEC47986DA7DA6 /* Signal.swift in Sources */,
+				B8DCA2D046ECA65B69FA42E2 /* Beacon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
