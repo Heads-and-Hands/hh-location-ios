@@ -1,0 +1,3 @@
+project "HHLocation.xcodeproj"
+scheme "HHLocation"
+clean true
