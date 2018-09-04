@@ -41,10 +41,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
         stackView.alignment = .center
         stackView.distribution = .fillEqually
         stackView.spacing = 10.0
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = UIEdgeInsets(top: 30, left: 0, bottom: 30, right: 0)
 
         view.addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            stackView.topAnchor.constraint(equalTo: view.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             stackView.leftAnchor.constraint(equalTo: view.leftAnchor),
             stackView.rightAnchor.constraint(equalTo: view.rightAnchor),
         ])
