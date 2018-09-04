@@ -39,10 +39,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.distribution = .fillEqually
+        stackView.distribution = .equalCentering
         stackView.spacing = 10.0
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(top: 30, left: 0, bottom: 30, right: 0)
+        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
 
         view.addSubview(stackView)
         NSLayoutConstraint.activate([
@@ -52,15 +52,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
             stackView.rightAnchor.constraint(equalTo: view.rightAnchor),
         ])
 
+        stackView.addArrangedSubview(UIView())
         stackView.addArrangedSubview(deviceIdStack)
 
-        nearBeaconIdLabel.textAlignment = .center
-        nearBeaconIdLabel.translatesAutoresizingMaskIntoConstraints = false
-        stackView.addArrangedSubview(nearBeaconIdLabel)
+        stackView.addArrangedSubview({
+            let embedStackView = UIStackView()
+            embedStackView.axis = .vertical
+            embedStackView.spacing = 10.0
 
-        distanceToNearBeaconLabel.textAlignment = .center
-        distanceToNearBeaconLabel.translatesAutoresizingMaskIntoConstraints = false
-        stackView.addArrangedSubview(distanceToNearBeaconLabel)
+            self.nearBeaconIdLabel.textAlignment = .center
+            embedStackView.addArrangedSubview(nearBeaconIdLabel)
+            self.distanceToNearBeaconLabel.textAlignment = .center
+            embedStackView.addArrangedSubview(distanceToNearBeaconLabel)
+            return embedStackView
+        }())
 
         switchToErrorState()
 
