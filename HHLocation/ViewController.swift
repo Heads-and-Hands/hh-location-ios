@@ -1,5 +1,5 @@
 //
-//  ViewController.s?wift
+//  ViewCo?ntroller.s?wift
 //  HHLocation
 //
 //  Created by HeadsAndHands on 03.09.2018.
@@ -8,6 +8,7 @@
 
 import CoreLocation
 import KalmanFilter
+import KeyboardManager
 import UIKit
 
 class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDelegate {
@@ -25,6 +26,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
     var myBeaconRegion: CLBeaconRegion?
     let locationManager = CLLocationManager()
     let apiManager = ApiManager()
+    let deviceID = UIDevice.current.identifierForVendor!.uuidString
+    let deviceName = UIDevice.current.name
+    let keyboardManager = KeyboardManager(notificationCenter: .default)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,18 +46,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
         stackView.distribution = .equalCentering
         stackView.spacing = 10.0
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
+        stackView.layoutMargins = UIEdgeInsets(top: 15, left: 15, bottom: 30, right: 15)
 
         view.addSubview(stackView)
+        let bottomConstraint = stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: view.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomConstraint,
             stackView.leftAnchor.constraint(equalTo: view.leftAnchor),
             stackView.rightAnchor.constraint(equalTo: view.rightAnchor),
         ])
 
         stackView.addArrangedSubview(UIView())
         stackView.addArrangedSubview(deviceIdStack)
+        stackView.addArrangedSubview(greetingsLabel)
 
         stackView.addArrangedSubview({
             let embedStackView = UIStackView()
@@ -70,7 +76,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
         switchToErrorState()
 
         apiManager.delegate = self
-        apiManager.requestBeaconParametrs()
+        apiManager.requestBeaconParameters()
+
+        self.deviceIdStack.isHidden = true
+        self.greetingsLabel.isHidden = true
+
+        apiManager.allDevices { [unowned self] devices in
+            let contains = devices.contains(where: { $0.uid == self.deviceID })
+            self.switchToRegisterState(contains)
+        }
+
+        keyboardManager.bindToKeyboardNotifications(superview: view, bottomConstraint: bottomConstraint, bottomOffset: 0)
+    }
+
+    private func switchToRegisterState(_ isRegister: Bool) {
+        self.deviceIdStack.isHidden = isRegister
+        self.greetingsLabel.isHidden = !isRegister
     }
 
     private func switchToErrorState() {
@@ -204,13 +225,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
             nearBeaconIdLabel.textColor = .lightGray
             distanceToNearBeaconLabel.textColor = .lightGray
 
-            lastNearestUId = beaconParameters.uId
+            lastNearestUId = beaconParameters.uid
             apiManager.sendLocation(posX: beaconParameters.posX, posY: beaconParameters.posY)
         }
     }
 
     private func beaconParameters(uid: Int) -> Beacon? {
-        return beaconsParameters.first(where: { $0.uId == uid })
+        return beaconsParameters.first(where: { $0.uid == uid })
     }
 
     // MARK: - ApiManagerDelegate
@@ -233,6 +254,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
         present(alert, animated: true, completion: nil)
     }
 
+    private(set) lazy var greetingsLabel: UILabel = {
+        let greetingsLabel = UILabel()
+        greetingsLabel.textColor = .white
+        greetingsLabel.text = "Congratulations, the device is added to the admin panel, don't forget to enable location services 🌈"
+        greetingsLabel.numberOfLines = 0
+        greetingsLabel.textAlignment = .center
+        greetingsLabel.font = UIFont.systemFont(ofSize: 22)
+        return greetingsLabel
+    }()
+
     private(set) lazy var deviceIdStack: UIStackView = {
         let deviceIdStack = UIStackView()
         deviceIdStack.axis = .vertical
@@ -243,52 +274,45 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
         deviceIdLabel.numberOfLines = 0
         deviceIdLabel.textColor = .white
         deviceIdLabel.text = """
-           The device ID is
-           \(UIDevice.current.identifierForVendor?.uuidString ?? "NOT AVAILABLE")
-
-           This device may be not registered in the admin panel 🙁.
-           In that case, please add this id to the admin panel below.
+           The device ID should to be added to remote database.
+           Please enter device name and tap on the send button.
         """
         deviceIdLabel.translatesAutoresizingMaskIntoConstraints = false
         deviceIdStack.addArrangedSubview(deviceIdLabel)
 
-        let buttonsStack = UIStackView()
-        buttonsStack.distribution = .fillEqually
-        deviceIdStack.addArrangedSubview(buttonsStack)
+        deviceIdStack.addArrangedSubview(self.nameTextField)
 
-        let copyButton = UIButton()
-        copyButton.setTitle("👉  Copy", for: .normal)
-        copyButton.setTitleColor(.gray, for: .highlighted)
-        copyButton.addTarget(self, action: #selector(copyUUID(_:)), for: .touchUpInside)
-        buttonsStack.addArrangedSubview(copyButton)
-
-        let openButton = UIButton()
-        openButton.setTitle("Open  👈", for: .normal)
-        openButton.setTitleColor(.gray, for: .highlighted)
-        openButton.addTarget(self, action: #selector(openAdminPanel(_:)), for: .touchUpInside)
-        buttonsStack.addArrangedSubview(openButton)
+        let sendButton = UIButton()
+        sendButton.setTitle("👉 SEND", for: .normal)
+        sendButton.setTitleColor(.lightGray, for: .highlighted)
+        sendButton.addTarget(self, action: #selector(send(_:)), for: .touchUpInside)
+        deviceIdStack.addArrangedSubview(sendButton)
 
         return deviceIdStack
     }()
 
-    @objc
-    private func openAdminPanel(_: UIButton) {
-        guard let url = URL(string: "http://d.handh.ru:8887/admin/devices") else {
-            return
-        }
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(url, completionHandler: nil)
-        } else {
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.openURL(url)
-            }
-        }
-    }
+    private(set) lazy var nameTextField: UITextField = {
+        let nameTextField = UITextField()
+        nameTextField.textAlignment = .center
+        nameTextField.textColor = .lightGray
+        nameTextField.text = self.deviceName
+        nameTextField.delegate = self
+        return nameTextField
+    }()
 
     @objc
-    private func copyUUID(_: UIButton) {
-        if let uuid = UIDevice.current.identifierForVendor?.uuidString {
-            UIPasteboard.general.string = uuid
-        }
+    private func send(_: UIButton) {
+        let device = Device(name: nameTextField.text ?? deviceName, uid: deviceID)
+        apiManager.register(device, completion: { success in
+            self.switchToRegisterState(success)
+            self.nameTextField.resignFirstResponder()
+        })
+    }
+}
+
+extension ViewController: UITextFieldDelegate {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

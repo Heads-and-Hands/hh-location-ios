@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		B8DCA00362FEC47986DA7DA6 /* Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCA5D550ED61D609FD3091 /* Signal.swift */; };
 		B8DCA2D046ECA65B69FA42E2 /* Beacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCA4BD58BCE5746C5E0809 /* Beacon.swift */; };
+		B8DCAB3AEEB162392154364E /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCAD336C5DBF3DDCE48513 /* Device.swift */; };
+		D4FEB414213EB6E400EFDA9B /* KeyboardManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4FEB413213EB6E400EFDA9B /* KeyboardManager.framework */; };
 		EF55C62D213D87240088329C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C62C213D87240088329C /* AppDelegate.swift */; };
 		EF55C62F213D87240088329C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C62E213D87240088329C /* ViewController.swift */; };
 		EF55C632213D87240088329C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF55C630213D87240088329C /* Main.storyboard */; };
@@ -23,6 +25,8 @@
 /* Begin PBXFileReference section */
 		B8DCA4BD58BCE5746C5E0809 /* Beacon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Beacon.swift; sourceTree = "<group>"; };
 		B8DCA5D550ED61D609FD3091 /* Signal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Signal.swift; sourceTree = "<group>"; };
+		B8DCAD336C5DBF3DDCE48513 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		D4FEB413213EB6E400EFDA9B /* KeyboardManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeyboardManager.framework; path = Carthage/Build/iOS/KeyboardManager.framework; sourceTree = "<group>"; };
 		EF55C629213D87240088329C /* HHLocation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HHLocation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF55C62C213D87240088329C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EF55C62E213D87240088329C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -42,6 +46,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF55C65D213D89480088329C /* CoreLocation.framework in Frameworks */,
+				D4FEB414213EB6E400EFDA9B /* KeyboardManager.framework in Frameworks */,
 				EF55C65F213D89620088329C /* KalmanFilter.framework in Frameworks */,
 				EF55C661213D89670088329C /* Alamofire.framework in Frameworks */,
 			);
@@ -55,6 +60,7 @@
 			children = (
 				B8DCA5D550ED61D609FD3091 /* Signal.swift */,
 				B8DCA4BD58BCE5746C5E0809 /* Beacon.swift */,
+				B8DCAD336C5DBF3DDCE48513 /* Device.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -94,6 +100,7 @@
 		EF55C65B213D89480088329C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D4FEB413213EB6E400EFDA9B /* KeyboardManager.framework */,
 				EF55C660213D89670088329C /* Alamofire.framework */,
 				EF55C65E213D89620088329C /* KalmanFilter.framework */,
 				EF55C65C213D89480088329C /* CoreLocation.framework */,
@@ -182,11 +189,13 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/KalmanFilter.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/KeyboardManager.framework",
 			);
 			name = Carthage;
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/KalmanFilter.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/KeyboardManager.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -204,6 +213,7 @@
 				EF55C62D213D87240088329C /* AppDelegate.swift in Sources */,
 				B8DCA00362FEC47986DA7DA6 /* Signal.swift in Sources */,
 				B8DCA2D046ECA65B69FA42E2 /* Beacon.swift in Sources */,
+				B8DCAB3AEEB162392154364E /* Device.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

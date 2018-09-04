@@ -8,9 +8,8 @@
 
 import Foundation
 
-struct Beacon {
-    let id: Int
-    let uId: Int
+struct Beacon: Decodable {
+    let uid: Int
     let name: String
     let correction: Int
     let posX: Double
