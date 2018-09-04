@@ -55,7 +55,7 @@ class ApiManager {
     
     func sendLocation(posX: Double, posY: Double) {
         if let deviceId = UIDevice.current.identifierForVendor?.uuidString {
-            let parameters: [String : Any] = ["DeviceId": deviceId,
+            let parameters: [String : Any] = ["UID": deviceId,
                                               "PosX": posX,
                                               "PosY": posY]
             
