@@ -26,7 +26,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
     var myBeaconRegion: CLBeaconRegion?
     let locationManager = CLLocationManager()
     let apiManager = ApiManager()
-    let deviceID = UIDevice.current.identifierForVendor!.uuidString
+    let deviceId = UIDevice.current.identifierForVendor?.uuidString
     let deviceName = UIDevice.current.name
     let keyboardManager = KeyboardManager(notificationCenter: .default)
 
@@ -82,7 +82,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
         self.greetingsLabel.isHidden = true
 
         apiManager.allDevices { [unowned self] devices in
-            let contains = devices.contains(where: { $0.uid == self.deviceID })
+            let contains = devices.contains(where: { $0.uid == self.deviceId })
             self.switchToRegisterState(contains)
         }
 
@@ -302,7 +302,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
 
     @objc
     private func send(_: UIButton) {
-        let device = Device(name: nameTextField.text ?? deviceName, uid: deviceID)
+        guard let deviceId = self.deviceId else {
+            return
+        }
+        let device = Device(name: nameTextField.text ?? deviceName, uid: deviceId)
         apiManager.register(device, completion: { success in
             self.switchToRegisterState(success)
             self.nameTextField.resignFirstResponder()
