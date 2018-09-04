@@ -28,11 +28,11 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string></string>
+	<string>This is needed for iBeacon device search.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string></string>
+	<string>This is needed for iBeacon device search.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>This is needed for iBeacon device search.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
