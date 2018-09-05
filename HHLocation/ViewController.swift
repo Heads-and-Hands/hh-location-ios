@@ -11,7 +11,7 @@ import KalmanFilter
 import KeyboardManager
 import UIKit
 
-class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDelegate {
+final class ViewController: UIViewController {
     let countSignalsForFilter = 5
 
     var beaconsParameters: [Beacon] = []
@@ -20,15 +20,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
 
     var lastNearestUId: Int = 0
 
-    var nearBeaconIdLabel = UILabel()
-    var distanceToNearBeaconLabel = UILabel()
+    let nearBeaconIdLabel = UILabel()
 
     var myBeaconRegion: CLBeaconRegion?
-    let locationManager = CLLocationManager()
+    private(set) lazy var locationManager: CLLocationManager = {
+        let locationManager = CLLocationManager()
+        locationManager.delegate = self
+        return locationManager
+    }()
+
     let apiManager = ApiManager()
+
     let deviceId = UIDevice.current.identifierForVendor?.uuidString
     let deviceName = UIDevice.current.name
-    let keyboardManager = KeyboardManager(notificationCenter: .default)
+    let keyboardManager: KeyboardManagerProtocol = KeyboardManager(notificationCenter: .default)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,8 +73,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
 
             self.nearBeaconIdLabel.textAlignment = .center
             embedStackView.addArrangedSubview(nearBeaconIdLabel)
-            self.distanceToNearBeaconLabel.textAlignment = .center
-            embedStackView.addArrangedSubview(distanceToNearBeaconLabel)
+            embedStackView.addArrangedSubview(deviceNameLabel)
             return embedStackView
         }())
 
@@ -78,8 +82,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
         apiManager.delegate = self
         apiManager.requestBeaconParameters()
 
-        self.deviceIdStack.isHidden = true
-        self.greetingsLabel.isHidden = true
+        deviceIdStack.isHidden = true
+        greetingsLabel.isHidden = true
 
         apiManager.allDevices { [unowned self] devices in
             let contains = devices.contains(where: { $0.uid == self.deviceId })
@@ -90,81 +94,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
     }
 
     private func switchToRegisterState(_ isRegister: Bool) {
-        self.deviceIdStack.isHidden = isRegister
-        self.greetingsLabel.isHidden = !isRegister
+        deviceIdStack.isHidden = isRegister
+        greetingsLabel.isHidden = !isRegister
     }
 
     private func switchToErrorState() {
         nearBeaconIdLabel.text = "Nearest beacon id: Unknown"
-        distanceToNearBeaconLabel.text = "Distance: Unknown"
         nearBeaconIdLabel.textColor = .red
-        distanceToNearBeaconLabel.textColor = .red
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 
-    func startPositionTracking() {
-        locationManager.delegate = self
-
+    private func startPositionTracking() {
         if let uuid = UUID(uuidString: "FDA50693-A4E2-4FB1-AFCF-C6EB07647825") {
-            myBeaconRegion = CLBeaconRegion(proximityUUID: uuid, identifier: "ru.handh.HHLocation.ios")
-            if let region = myBeaconRegion {
-                region.notifyEntryStateOnDisplay = true
-                locationManager.startMonitoring(for: region)
-                locationManager.startRangingBeacons(in: region)
-            } else {
-                print("Error: Сould not create region")
-                presentAlert(title: "Error", message: "Сould not create region", reloadFunction: nil)
-            }
+            let beaconRegion = CLBeaconRegion(proximityUUID: uuid, identifier: "ru.handh.HHLocation.ios")
+            beaconRegion.notifyOnEntry = true
+            beaconRegion.notifyEntryStateOnDisplay = true
+            locationManager.startMonitoring(for: beaconRegion)
+            locationManager.startRangingBeacons(in: beaconRegion)
+            myBeaconRegion = beaconRegion
         } else {
             print("Error: Error in the UUID region")
             presentAlert(title: "Error", message: "Error in the UUID region", reloadFunction: nil)
-        }
-    }
-
-    // MARK: - CLLocationManagerDelegate
-
-    func locationManager(_: CLLocationManager, didEnterRegion _: CLRegion) {
-        if let region = myBeaconRegion {
-            locationManager.startRangingBeacons(in: region)
-        } else {
-            print("Error: Error start ranging beacons")
-            presentAlert(title: "Error", message: "Error start ranging beacons", reloadFunction: nil)
-        }
-    }
-
-    func locationManager(_: CLLocationManager, didExitRegion _: CLRegion) {
-        switchToErrorState()
-
-        if let region = myBeaconRegion {
-            locationManager.stopRangingBeacons(in: region)
-        } else {
-            print("Error: Error stop ranging beacons")
-            presentAlert(title: "Error", message: "Error stop ranging beacons", reloadFunction: nil)
-        }
-    }
-
-    func locationManager(_: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in _: CLBeaconRegion) {
-        for beacon in beacons {
-            let minor = beacon.minor.intValue
-            switch beacon.proximity {
-            case .immediate, .near, .far:
-                if var signals = beaconsSignals[minor] {
-                    if signals.count == countSignalsForFilter {
-                        signals.remove(at: 0)
-                    }
-                    signals.append(beacon.rssi)
-                    beaconsSignals[minor] = signals
-                } else {
-                    beaconsSignals[minor] = [beacon.rssi]
-                }
-
-                signalFiltering()
-            default:
-                break
-            }
         }
     }
 
@@ -221,9 +174,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
     private func showPosition(nearDistance: (key: Int, value: Double)) {
         if let beaconParameters = beaconParameters(uid: nearDistance.key) {
             nearBeaconIdLabel.text = "Nearest beacon id: \(nearDistance.key)"
-            distanceToNearBeaconLabel.text = "Distance: \(nearDistance.value)"
             nearBeaconIdLabel.textColor = .lightGray
-            distanceToNearBeaconLabel.textColor = .lightGray
 
             lastNearestUId = beaconParameters.uid
             apiManager.sendLocation(posX: beaconParameters.posX, posY: beaconParameters.posY)
@@ -234,34 +185,41 @@ class ViewController: UIViewController, CLLocationManagerDelegate, ApiManagerDel
         return beaconsParameters.first(where: { $0.uid == uid })
     }
 
-    // MARK: - ApiManagerDelegate
+    private(set) lazy var deviceNameLabel: UILabel = {
+        let deviceNameLabel = UILabel()
+        deviceNameLabel.textAlignment = .center
+        deviceNameLabel.text = "Settings device name: \(self.deviceName)"
+        deviceNameLabel.textColor = .lightGray
+        deviceNameLabel.numberOfLines = 0
+        return deviceNameLabel
+    }()
 
-    func updateBeaconsParameters(beaconsParameters: [Beacon]) {
-        self.beaconsParameters = beaconsParameters
-        startPositionTracking()
-    }
+    private(set) lazy var greetingsLabel: UIView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 5.0
 
-    func presentAlert(title: String, message: String, reloadFunction: ((UIAlertAction) -> Void)?) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-
-        if reloadFunction != nil {
-            alert.addAction(UIAlertAction(title: "Refresh", style: .default, handler: reloadFunction))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-        } else {
-            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        }
-
-        present(alert, animated: true, completion: nil)
-    }
-
-    private(set) lazy var greetingsLabel: UILabel = {
         let greetingsLabel = UILabel()
         greetingsLabel.textColor = .white
-        greetingsLabel.text = "Congratulations, the device is added to the admin panel, don't forget to enable location services 🌈"
+        greetingsLabel.text = """
+        Congratulations, the device is added to the admin panel🌈. Make sure that you:
+        """
         greetingsLabel.numberOfLines = 0
         greetingsLabel.textAlignment = .center
         greetingsLabel.font = UIFont.systemFont(ofSize: 22)
-        return greetingsLabel
+        stackView.addArrangedSubview(greetingsLabel)
+
+        let descriptionLabel = UILabel()
+        descriptionLabel.textColor = .lightGray
+        descriptionLabel.text = """
+            - Turn on Bluetooth in settings 
+            - Enable location services access in background mode
+        """
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.font = UIFont.systemFont(ofSize: 20)
+        stackView.addArrangedSubview(descriptionLabel)
+
+        return stackView
     }()
 
     private(set) lazy var deviceIdStack: UIStackView = {
@@ -317,5 +275,73 @@ extension ViewController: UITextFieldDelegate {
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+}
+
+// MARK: - CLLocationManagerDelegate
+
+extension ViewController: CLLocationManagerDelegate {
+    func locationManager(_: CLLocationManager, didEnterRegion _: CLRegion) {
+        if let region = myBeaconRegion {
+            locationManager.startRangingBeacons(in: region)
+        } else {
+            print("Error: Error start ranging beacons")
+            presentAlert(title: "Error", message: "Error start ranging beacons", reloadFunction: nil)
+        }
+    }
+
+    func locationManager(_: CLLocationManager, didExitRegion _: CLRegion) {
+        switchToErrorState()
+
+        if let region = myBeaconRegion {
+            locationManager.stopRangingBeacons(in: region)
+        } else {
+            print("Error: Error stop ranging beacons")
+            presentAlert(title: "Error", message: "Error stop ranging beacons", reloadFunction: nil)
+        }
+    }
+
+    func locationManager(_: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in _: CLBeaconRegion) {
+        for beacon in beacons {
+            let minor = beacon.minor.intValue
+            switch beacon.proximity {
+            case .immediate, .near, .far:
+                if var signals = beaconsSignals[minor] {
+                    if signals.count == countSignalsForFilter {
+                        signals.remove(at: 0)
+                    }
+                    signals.append(beacon.rssi)
+                    beaconsSignals[minor] = signals
+                } else {
+                    beaconsSignals[minor] = [beacon.rssi]
+                }
+
+                signalFiltering()
+            default:
+                break
+            }
+        }
+    }
+}
+
+// MARK: - ApiManagerDelegate
+
+extension ViewController: ApiManagerDelegate {
+    func updateBeaconsParameters(beaconsParameters: [Beacon]) {
+        self.beaconsParameters = beaconsParameters
+        startPositionTracking()
+    }
+
+    func presentAlert(title: String, message: String, reloadFunction: ((UIAlertAction) -> Void)?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+
+        if reloadFunction != nil {
+            alert.addAction(UIAlertAction(title: "Refresh", style: .default, handler: reloadFunction))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        } else {
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        }
+
+        present(alert, animated: true, completion: nil)
     }
 }
