@@ -12,7 +12,6 @@
 		B8DCAB3AEEB162392154364E /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCAD336C5DBF3DDCE48513 /* Device.swift */; };
 		D4FEB414213EB6E400EFDA9B /* KeyboardManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4FEB413213EB6E400EFDA9B /* KeyboardManager.framework */; };
 		EF55C62D213D87240088329C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C62C213D87240088329C /* AppDelegate.swift */; };
-		EF55C62F213D87240088329C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C62E213D87240088329C /* ViewController.swift */; };
 		EF55C632213D87240088329C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF55C630213D87240088329C /* Main.storyboard */; };
 		EF55C634213D87290088329C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF55C633213D87290088329C /* Assets.xcassets */; };
 		EF55C637213D87290088329C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF55C635213D87290088329C /* LaunchScreen.storyboard */; };
@@ -20,6 +19,10 @@
 		EF55C65F213D89620088329C /* KalmanFilter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF55C65E213D89620088329C /* KalmanFilter.framework */; };
 		EF55C661213D89670088329C /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF55C660213D89670088329C /* Alamofire.framework */; };
 		EF55C665213D89FE0088329C /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C664213D89FE0088329C /* ApiManager.swift */; };
+		EF55C673213ED6E60088329C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C672213ED6E60088329C /* MapViewController.swift */; };
+		EF55C675213ED70A0088329C /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C674213ED70A0088329C /* InfoView.swift */; };
+		EF55C679213FF6A20088329C /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C678213FF6A20088329C /* TabBar.swift */; };
+		EF55C67B214007BB0088329C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C67A214007BB0088329C /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +32,6 @@
 		D4FEB413213EB6E400EFDA9B /* KeyboardManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeyboardManager.framework; path = Carthage/Build/iOS/KeyboardManager.framework; sourceTree = "<group>"; };
 		EF55C629213D87240088329C /* HHLocation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HHLocation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF55C62C213D87240088329C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		EF55C62E213D87240088329C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		EF55C631213D87240088329C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EF55C633213D87290088329C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EF55C636213D87290088329C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -38,6 +40,10 @@
 		EF55C65E213D89620088329C /* KalmanFilter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KalmanFilter.framework; path = Carthage/Build/iOS/KalmanFilter.framework; sourceTree = "<group>"; };
 		EF55C660213D89670088329C /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		EF55C664213D89FE0088329C /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
+		EF55C672213ED6E60088329C /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		EF55C674213ED70A0088329C /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		EF55C678213FF6A20088329C /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
+		EF55C67A214007BB0088329C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +92,8 @@
 			isa = PBXGroup;
 			children = (
 				EF55C62C213D87240088329C /* AppDelegate.swift */,
-				EF55C62E213D87240088329C /* ViewController.swift */,
+				EF55C678213FF6A20088329C /* TabBar.swift */,
+				EF55C676213ED7130088329C /* ViewControllers */,
 				EF55C664213D89FE0088329C /* ApiManager.swift */,
 				EF55C630213D87240088329C /* Main.storyboard */,
 				EF55C633213D87290088329C /* Assets.xcassets */,
@@ -106,6 +113,24 @@
 				EF55C65C213D89480088329C /* CoreLocation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EF55C676213ED7130088329C /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				EF55C677213ED73F0088329C /* SubViews */,
+				EF55C672213ED6E60088329C /* MapViewController.swift */,
+				EF55C67A214007BB0088329C /* SettingsViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		EF55C677213ED73F0088329C /* SubViews */ = {
+			isa = PBXGroup;
+			children = (
+				EF55C674213ED70A0088329C /* InfoView.swift */,
+			);
+			path = SubViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -209,11 +234,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF55C665213D89FE0088329C /* ApiManager.swift in Sources */,
-				EF55C62F213D87240088329C /* ViewController.swift in Sources */,
 				EF55C62D213D87240088329C /* AppDelegate.swift in Sources */,
+				EF55C67B214007BB0088329C /* SettingsViewController.swift in Sources */,
 				B8DCA00362FEC47986DA7DA6 /* Signal.swift in Sources */,
 				B8DCA2D046ECA65B69FA42E2 /* Beacon.swift in Sources */,
 				B8DCAB3AEEB162392154364E /* Device.swift in Sources */,
+				EF55C675213ED70A0088329C /* InfoView.swift in Sources */,
+				EF55C673213ED6E60088329C /* MapViewController.swift in Sources */,
+				EF55C679213FF6A20088329C /* TabBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
