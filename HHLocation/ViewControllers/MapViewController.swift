@@ -42,7 +42,7 @@ class MapViewController: UIViewController {
         return view
     }()
     
-    var apiManager: ApiManager!
+    var apiManager: ApiManager?
     
     override func viewDidLoad() {
         super.viewDidLoad()

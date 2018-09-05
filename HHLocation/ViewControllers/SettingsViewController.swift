@@ -10,13 +10,12 @@ import KeyboardManager
 import UIKit
 
 class SettingsViewController: UIViewController {
+
+    let nearBeaconIdLabel = UILabel()
+
+    var apiManager: ApiManager?
     
-    var nearBeaconIdLabel = UILabel()
-    var distanceToNearBeaconLabel = UILabel()
-
-    var apiManager: ApiManager!
-
-    let keyboardManager = KeyboardManager(notificationCenter: .default)
+    let keyboardManager: KeyboardManagerProtocol = KeyboardManager(notificationCenter: .default)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,41 +51,70 @@ class SettingsViewController: UIViewController {
             
             self.nearBeaconIdLabel.textAlignment = .center
             embedStackView.addArrangedSubview(nearBeaconIdLabel)
-            self.distanceToNearBeaconLabel.textAlignment = .center
-            embedStackView.addArrangedSubview(distanceToNearBeaconLabel)
+            embedStackView.addArrangedSubview(deviceNameLabel)
             return embedStackView
             }())
         
         switchToErrorState()
         
-        self.deviceIdStack.isHidden = true
-        self.greetingsLabel.isHidden = true
+        deviceIdStack.isHidden = true
+        greetingsLabel.isHidden = true
         
-        apiManager.allDevices { [unowned self] devices in
-            let contains = devices.contains(where: { $0.uid == self.apiManager.deviceId })
-            self.switchToRegisterState(contains)
+        if let manager = apiManager {
+            manager.allDevices { [unowned self] devices in
+                let contains = devices.contains(where: { $0.uid == manager.deviceId })
+                self.switchToRegisterState(contains)
+            }
+            
         }
         
         keyboardManager.bindToKeyboardNotifications(superview: view, bottomConstraint: bottomConstraint, bottomOffset: 0)
     }
     
     private func switchToRegisterState(_ isRegister: Bool) {
-        self.deviceIdStack.isHidden = isRegister
-        self.greetingsLabel.isHidden = !isRegister
+        deviceIdStack.isHidden = isRegister
+        greetingsLabel.isHidden = !isRegister
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
-    private(set) lazy var greetingsLabel: UILabel = {
+    private(set) lazy var deviceNameLabel: UILabel = {
+        let deviceNameLabel = UILabel()
+        deviceNameLabel.textAlignment = .center
+        deviceNameLabel.text = "Settings device name: \(self.apiManager?.deviceName ?? "Undefined")"
+        deviceNameLabel.textColor = .lightGray
+        deviceNameLabel.numberOfLines = 0
+        return deviceNameLabel
+    }()
+    
+    private(set) lazy var greetingsLabel: UIView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 5.0
+        
         let greetingsLabel = UILabel()
         greetingsLabel.textColor = .white
-        greetingsLabel.text = "Congratulations, the device is added to the admin panel, don't forget to enable location services 🌈"
+        greetingsLabel.text = """
+        Congratulations, the device is added to the admin panel🌈. Make sure that you:
+        """
         greetingsLabel.numberOfLines = 0
         greetingsLabel.textAlignment = .center
         greetingsLabel.font = UIFont.systemFont(ofSize: 22)
-        return greetingsLabel
+        stackView.addArrangedSubview(greetingsLabel)
+        
+        let descriptionLabel = UILabel()
+        descriptionLabel.textColor = .lightGray
+        descriptionLabel.text = """
+        - Turn on Bluetooth in settings
+        - Enable location services access in background mode
+        """
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.font = UIFont.systemFont(ofSize: 20)
+        stackView.addArrangedSubview(descriptionLabel)
+        
+        return stackView
     }()
     
     private(set) lazy var deviceIdStack: UIStackView = {
@@ -120,18 +148,18 @@ class SettingsViewController: UIViewController {
         let nameTextField = UITextField()
         nameTextField.textAlignment = .center
         nameTextField.textColor = .lightGray
-        nameTextField.text = self.apiManager.deviceName
+        nameTextField.text = self.apiManager?.deviceName
         nameTextField.delegate = self
         return nameTextField
     }()
     
     @objc
     private func send(_: UIButton) {
-        guard let deviceId = self.apiManager.deviceId else {
+        guard let deviceId = self.apiManager?.deviceId else {
             return
         }
-        let device = Device(name: nameTextField.text ?? apiManager.deviceName, uid: deviceId)
-        apiManager.register(device, completion: { success in
+        let device = Device(name: nameTextField.text ?? apiManager?.deviceName ?? "Undefined", uid: deviceId)
+        apiManager?.register(device, completion: { success in
             self.switchToRegisterState(success)
             self.nameTextField.resignFirstResponder()
         })
@@ -146,16 +174,12 @@ extension SettingsViewController: ParentViewControllerDelegate {
     
     func detectedBeacon(beacon: Beacon, distance: Double) {
         nearBeaconIdLabel.text = "Nearest beacon id: \(beacon.uid)"
-        distanceToNearBeaconLabel.text = "Distance: \(distance)"
         nearBeaconIdLabel.textColor = .lightGray
-        distanceToNearBeaconLabel.textColor = .lightGray
     }
     
     func switchToErrorState() {
         nearBeaconIdLabel.text = "Nearest beacon id: Unknown"
-        distanceToNearBeaconLabel.text = "Distance: Unknown"
         nearBeaconIdLabel.textColor = .red
-        distanceToNearBeaconLabel.textColor = .red
     }
 }
 
@@ -167,4 +191,3 @@ extension SettingsViewController: UITextFieldDelegate {
         return true
     }
 }
-

@@ -18,7 +18,13 @@ typealias RegisterDeviceCallback = (Bool) -> Void
 class ApiManager: NSObject{
     
     var myBeaconRegion: CLBeaconRegion?
-    let locationManager = CLLocationManager()
+    
+    private(set) lazy var locationManager: CLLocationManager = {
+        let locationManager = CLLocationManager()
+        locationManager.delegate = self
+        return locationManager
+    }()
+
     let deviceId = UIDevice.current.identifierForVendor?.uuidString
     let deviceName = UIDevice.current.name
     
@@ -140,18 +146,13 @@ extension ApiManager {
             locationManager.requestAlwaysAuthorization()
         }
         
-        locationManager.delegate = self
-        
         if let uuid = UUID(uuidString: "FDA50693-A4E2-4FB1-AFCF-C6EB07647825") {
-            myBeaconRegion = CLBeaconRegion(proximityUUID: uuid, identifier: "ru.handh.HHLocation.ios")
-            if let region = myBeaconRegion {
-                region.notifyEntryStateOnDisplay = true
-                locationManager.startMonitoring(for: region)
-                locationManager.startRangingBeacons(in: region)
-            } else {
-                print("Error: Сould not create region")
-                delegate?.presentAlert(title: "Error", message: "Сould not create region", reloadFunction: nil)
-            }
+            let beaconRegion = CLBeaconRegion(proximityUUID: uuid, identifier: "ru.handh.HHLocation.ios")
+            beaconRegion.notifyOnEntry = true
+            beaconRegion.notifyEntryStateOnDisplay = true
+            locationManager.startMonitoring(for: beaconRegion)
+            locationManager.startRangingBeacons(in: beaconRegion)
+            myBeaconRegion = beaconRegion
         } else {
             print("Error: Error in the UUID region")
             delegate?.presentAlert(title: "Error", message: "Error in the UUID region", reloadFunction: nil)
