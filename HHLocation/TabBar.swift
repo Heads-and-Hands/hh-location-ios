@@ -22,6 +22,7 @@ class TabBar: UITabBarController {
         //Settings
         let settingsViewController = SettingsViewController()
         settingsViewController.apiManager = self.apiManager
+        settingsViewController.locationManager = self.locationManager
         
         let settingsItem = UITabBarItem(title: "Settings", image: UIImage(named: "ItemSettings"), tag: 1)
         settingsViewController.tabBarItem = settingsItem
@@ -31,6 +32,13 @@ class TabBar: UITabBarController {
     
     private lazy var apiManager: ApiManager = {
         let manager = ApiManager()
+        manager.delegate = self
+        
+        return manager
+    }()
+    
+    private lazy var locationManager: LocationManager = {
+        let manager = LocationManager()
         manager.delegate = self
         
         return manager
@@ -46,17 +54,8 @@ class TabBar: UITabBarController {
 // MARK: ApiManagerDelegate
 
 extension TabBar: ApiManagerDelegate {
-    
-    func detectedBeacon(beacon: Beacon, distance: Double) {
-        guard let viewControllers = self.viewControllers else {
-            return
-        }
-        
-        for viewController in viewControllers {
-            if let vc = viewController as? ParentViewControllerDelegate {
-                vc.detectedBeacon(beacon: beacon, distance: distance)
-            }
-        }
+    func updateBeaconsParameters(beacons: [Beacon]) {
+        locationManager.beaconsParameters = beacons
     }
     
     func switchToErrorState() {
@@ -95,6 +94,27 @@ extension TabBar: ApiManagerDelegate {
             }
         }
     }
+}
+
+// MARK: - LocationManagerDelegate
+
+extension TabBar: LocationManagerDelegate {
+    
+    func detectedBeacon(beacon: Beacon, distance: Double) {
+        apiManager.sendLocation(posX: beacon.posX, posY: beacon.posY)
+        
+        guard let viewControllers = self.viewControllers else {
+            return
+        }
+        
+        for viewController in viewControllers {
+            if let vc = viewController as? ParentViewControllerDelegate {
+                vc.detectedBeacon(beacon: beacon, distance: distance)
+            }
+        }
+    }
+    
+    
 }
 
 // MARK: - Protocol ApiManagerDelegate

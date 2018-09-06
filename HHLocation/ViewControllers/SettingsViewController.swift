@@ -14,6 +14,7 @@ class SettingsViewController: UIViewController {
     let nearBeaconIdLabel = UILabel()
 
     var apiManager: ApiManager?
+    var locationManager: LocationManager?
     
     let keyboardManager: KeyboardManagerProtocol = KeyboardManager(notificationCenter: .default)
     
@@ -60,9 +61,9 @@ class SettingsViewController: UIViewController {
         deviceIdStack.isHidden = true
         greetingsLabel.isHidden = true
         
-        if let manager = apiManager {
-            manager.allDevices { [unowned self] devices in
-                let contains = devices.contains(where: { $0.uid == manager.deviceId })
+        if let managerApi = apiManager, let managerLocation = locationManager {
+            managerApi.allDevices { [unowned self] devices in
+                let contains = devices.contains(where: { $0.uid == managerLocation.deviceId })
                 self.switchToRegisterState(contains)
             }
             
@@ -83,7 +84,7 @@ class SettingsViewController: UIViewController {
     private(set) lazy var deviceNameLabel: UILabel = {
         let deviceNameLabel = UILabel()
         deviceNameLabel.textAlignment = .center
-        deviceNameLabel.text = "Settings device name: \(self.apiManager?.deviceName ?? "Undefined")"
+        deviceNameLabel.text = "Settings device name: \(self.locationManager?.deviceName ?? "Undefined")"
         deviceNameLabel.textColor = .lightGray
         deviceNameLabel.numberOfLines = 0
         return deviceNameLabel
@@ -148,17 +149,17 @@ class SettingsViewController: UIViewController {
         let nameTextField = UITextField()
         nameTextField.textAlignment = .center
         nameTextField.textColor = .lightGray
-        nameTextField.text = self.apiManager?.deviceName
+        nameTextField.text = self.locationManager?.deviceName
         nameTextField.delegate = self
         return nameTextField
     }()
     
     @objc
     private func send(_: UIButton) {
-        guard let deviceId = self.apiManager?.deviceId else {
+        guard let deviceId = self.locationManager?.deviceId else {
             return
         }
-        let device = Device(name: nameTextField.text ?? apiManager?.deviceName ?? "Undefined", uid: deviceId)
+        let device = Device(name: nameTextField.text ?? locationManager?.deviceName ?? "Undefined", uid: deviceId)
         apiManager?.register(device, completion: { success in
             self.switchToRegisterState(success)
             self.nameTextField.resignFirstResponder()

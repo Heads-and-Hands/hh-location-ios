@@ -15,6 +15,24 @@ class MapViewController: UIViewController {
     
     let topInfoView = InfoView()
     
+    var position: CGPoint?
+    
+    let locatingButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 5
+        button.addTarget(self, action: #selector(pressLocatingButton(sender:)), for: .touchUpInside)
+        
+        if (UserDefaults.standard.bool(forKey: "locationDisable")) {
+            button.setTitle("Offline mode", for: .normal)
+            button.backgroundColor = UIColor.red
+        } else {
+            button.setTitle("Locating", for: .normal)
+            button.backgroundColor = UIColor.green
+        }
+        
+        return button
+    }()
+    
     let mapImageView: UIImageView = {
         
         let image = UIImage(named: "MapImage")
@@ -49,6 +67,7 @@ class MapViewController: UIViewController {
         
         view.backgroundColor = UIColor.white
         
+        topInfoView.requestButton.addTarget(self, action: #selector(pressRequestButton(sender:)), for: .touchUpInside)
         topInfoView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(topInfoView)
         topInfoView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -59,6 +78,56 @@ class MapViewController: UIViewController {
         view.addSubview(mapImageView)
         mapImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         mapImageView.topAnchor.constraint(equalTo: topInfoView.bottomAnchor).isActive = true
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(clickImageMap(sender:)))
+        mapImageView.addGestureRecognizer(tapRecognizer)
+        mapImageView.isUserInteractionEnabled = true
+        
+        userPin.center = CGPoint(x: UIScreen.main.bounds.width*2, y: 0)
+        mapImageView.addSubview(userPin)
+        
+        locatingButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(locatingButton)
+        locatingButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10.0).isActive = true
+        locatingButton.topAnchor.constraint(equalTo: mapImageView.bottomAnchor, constant: 10.0).isActive = true
+        locatingButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10.0).isActive = true
+        locatingButton.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+    }
+    
+    @objc
+    func pressLocatingButton(sender: UIButton) {
+        let locationDisable = !UserDefaults.standard.bool(forKey: "locationDisable")
+        
+        if locationDisable {
+            locatingButton.setTitle("Offline mode", for: .normal)
+            locatingButton.backgroundColor = UIColor.red
+        } else {
+            locatingButton.setTitle("Locating", for: .normal)
+            locatingButton.backgroundColor = UIColor.green
+        }
+        
+        UserDefaults.standard.set(locationDisable, forKey: "locationDisable")
+    }
+    
+    @objc
+    func pressRequestButton(sender: UIButton) {
+        if let coordinate = position {
+            topInfoView.requestButton.backgroundColor = UIColor.blue
+            apiManager?.sendLocation(posX: Double(coordinate.x), posY: Double(coordinate.y))
+        }
+    }
+    
+    @objc
+    func clickImageMap(sender: UITapGestureRecognizer) {
+        if sender.state == .ended, UserDefaults.standard.bool(forKey: "locationDisable") {
+            let touchLocation = sender.location(in: mapImageView)
+            
+            let coordinate = CGPoint(x: mapImageWidth/mapImageView.bounds.width*touchLocation.x,
+                                        y: mapImageHeight/mapImageView.bounds.height*touchLocation.y)
+            
+            updateUserPosition(coordinate: coordinate)
+            topInfoView.requestButton.backgroundColor = UIColor.gray
+        }
     }
 }
 
@@ -70,7 +139,8 @@ extension MapViewController {
                                     y: mapImageView.bounds.height/mapImageHeight*coordinate.y)
         
         userPin.center = newCoordinate
-        mapImageView.addSubview(userPin)
+        position = newCoordinate
+        topInfoView.setCoordinate(coordinate: coordinate)
     }
 }
 
@@ -80,7 +150,6 @@ extension MapViewController: ParentViewControllerDelegate {
     
     func detectedBeacon(beacon: Beacon, distance: Double) {
         let coordinate = CGPoint(x: beacon.posX, y: beacon.posY)
-        topInfoView.setCoordinate(coordinate: coordinate)
         updateUserPosition(coordinate: coordinate)
     }
     
@@ -91,10 +160,11 @@ extension MapViewController: ParentViewControllerDelegate {
     
     func completeRequest(error: Bool) {
         if error {
-            topInfoView.indicatorView.backgroundColor = UIColor.red
+            topInfoView.requestButton.backgroundColor = UIColor.red
         } else {
-            topInfoView.indicatorView.backgroundColor = UIColor.green
+            topInfoView.requestButton.backgroundColor = UIColor.green
         }
+        topInfoView.requestButton.isEnabled = true
     }
 }
 

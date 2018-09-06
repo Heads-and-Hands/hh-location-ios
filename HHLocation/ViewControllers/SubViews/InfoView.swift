@@ -10,9 +10,18 @@ import UIKit
 
 
 class InfoView: UIView {
-    let indicatorSize: CGFloat = 20.0
+    let requestButtonSize: CGFloat = 60.0
     let coordinateLabel = UILabel()
-    let indicatorView = UIView()
+    lazy var requestButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = requestButtonSize/2.0
+        button.setTitle("send coord", for: .normal)
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.titleLabel?.numberOfLines = 0
+        button.backgroundColor = UIColor.yellow
+        
+        return button
+    }()
     
     init() {
         super.init(frame: CGRect.zero)
@@ -31,7 +40,7 @@ class InfoView: UIView {
         
         deviceIdLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 10.0).isActive = true
         deviceIdLabel.topAnchor.constraint(equalTo: topAnchor, constant: 30.0).isActive = true
-        deviceIdLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1.0, constant: -(indicatorSize + 20)).isActive = true
+        deviceIdLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1.0, constant: -(requestButtonSize + 20)).isActive = true
         
         coordinateLabel.text = "Coordinate: Undefined"
         coordinateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -39,17 +48,15 @@ class InfoView: UIView {
         
         coordinateLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 10.0).isActive = true
         coordinateLabel.topAnchor.constraint(equalTo: deviceIdLabel.bottomAnchor, constant: 10.0).isActive = true
-        coordinateLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1.0, constant: -(indicatorSize + 20)).isActive = true
+        coordinateLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1.0, constant: -10).isActive = true
         
-        indicatorView.backgroundColor = UIColor.yellow
-        indicatorView.layer.cornerRadius = indicatorSize/2.0
-        indicatorView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(indicatorView)
+        requestButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(requestButton)
         
-        indicatorView.rightAnchor.constraint(equalTo: rightAnchor, constant: -10.0).isActive = true
-        indicatorView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        indicatorView.widthAnchor.constraint(equalToConstant: indicatorSize).isActive = true
-        indicatorView.heightAnchor.constraint(equalToConstant: indicatorSize).isActive = true
+        requestButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -10.0).isActive = true
+        requestButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        requestButton.widthAnchor.constraint(equalToConstant: requestButtonSize).isActive = true
+        requestButton.heightAnchor.constraint(equalToConstant: requestButtonSize).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

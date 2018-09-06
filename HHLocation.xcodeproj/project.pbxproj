@@ -23,6 +23,7 @@
 		EF55C675213ED70A0088329C /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C674213ED70A0088329C /* InfoView.swift */; };
 		EF55C679213FF6A20088329C /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C678213FF6A20088329C /* TabBar.swift */; };
 		EF55C67B214007BB0088329C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C67A214007BB0088329C /* SettingsViewController.swift */; };
+		EF55C67D214043DA0088329C /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C67C214043D90088329C /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		EF55C674213ED70A0088329C /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		EF55C678213FF6A20088329C /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		EF55C67A214007BB0088329C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		EF55C67C214043D90088329C /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 				EF55C678213FF6A20088329C /* TabBar.swift */,
 				EF55C676213ED7130088329C /* ViewControllers */,
 				EF55C664213D89FE0088329C /* ApiManager.swift */,
+				EF55C67C214043D90088329C /* LocationManager.swift */,
 				EF55C630213D87240088329C /* Main.storyboard */,
 				EF55C633213D87290088329C /* Assets.xcassets */,
 				EF55C635213D87290088329C /* LaunchScreen.storyboard */,
@@ -235,6 +238,7 @@
 			files = (
 				EF55C665213D89FE0088329C /* ApiManager.swift in Sources */,
 				EF55C62D213D87240088329C /* AppDelegate.swift in Sources */,
+				EF55C67D214043DA0088329C /* LocationManager.swift in Sources */,
 				EF55C67B214007BB0088329C /* SettingsViewController.swift in Sources */,
 				B8DCA00362FEC47986DA7DA6 /* Signal.swift in Sources */,
 				B8DCA2D046ECA65B69FA42E2 /* Beacon.swift in Sources */,
