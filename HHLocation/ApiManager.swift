@@ -9,14 +9,23 @@
 import Alamofire
 import UIKit
 
+import CoreLocation
+import KalmanFilter
+
 typealias AllDevicesCallback = ([Device]) -> Void
 typealias RegisterDeviceCallback = (Bool) -> Void
 
-class ApiManager {
+class ApiManager: NSObject{
+    
     weak var delegate: ApiManagerDelegate?
 
     private let host = "http://d.handh.ru:8887"
     private let token = "fsdf"
+    
+    override init() {
+        super.init()
+        requestBeaconParameters()
+    }
 
     func allDevices(completion: @escaping AllDevicesCallback) {
         request("\(host)/device?token=\(token)", method: .get).responseJSON { responseJSON in
@@ -68,7 +77,7 @@ class ApiManager {
                     return
                 }
 
-                self.delegate?.updateBeaconsParameters(beaconsParameters: beacons)
+                self.delegate?.updateBeaconsParameters(beacons: beacons)
 
             case let .failure(error):
                 print("Error: \(error.localizedDescription)")
@@ -89,14 +98,18 @@ class ApiManager {
 
                 if let error = response.error {
                     print("Error: \(error.localizedDescription)")
+                    self.delegate?.completeRequest(error: true)
                     self.delegate?.presentAlert(title: "Error", message: error.localizedDescription, reloadFunction: {
                         _ in
                         self.sendLocation(posX: posX, posY: posY)
                     })
+                } else {
+                    self.delegate?.completeRequest(error: false)
                 }
             }
         } else {
             print("Error: Unable to send location data")
+            self.delegate?.completeRequest(error: true)
             delegate?.presentAlert(title: "Error", message: "Unable to send location data", reloadFunction: {
                 _ in
                 self.sendLocation(posX: posX, posY: posY)
@@ -105,7 +118,10 @@ class ApiManager {
     }
 }
 
+// MARK: - Protocol ApiManagerDelegate
+
 protocol ApiManagerDelegate: class {
-    func updateBeaconsParameters(beaconsParameters: [Beacon])
+    func updateBeaconsParameters(beacons: [Beacon])
+    func completeRequest(error: Bool)
     func presentAlert(title: String, message: String, reloadFunction: ((UIAlertAction) -> Void)?)
 }
