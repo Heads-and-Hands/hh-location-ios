@@ -10,8 +10,6 @@ platform :ios do
     lane :internal do
         match(type: 'appstore')
 
-        bootstrap_carthage
-
         build_number = ENV['BITRISE_BUILD_NUMBER']
         increment_build_number(
             build_number: build_number
@@ -27,14 +25,6 @@ platform :ios do
             skip_waiting_for_build_processing: true,
             skip_submission: true,
             itc_provider: "X86NQK83T7"
-        )
-    end
-
-    lane :bootstrap_carthage do
-        carthage(
-            platform: 'iOS',
-            cache_builds: true,
-            use_binaries: false,
         )
     end
 end

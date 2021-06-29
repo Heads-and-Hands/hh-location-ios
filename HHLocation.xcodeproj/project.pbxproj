@@ -3,30 +3,45 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		B8DCA00362FEC47986DA7DA6 /* Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCA5D550ED61D609FD3091 /* Signal.swift */; };
 		B8DCA2D046ECA65B69FA42E2 /* Beacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCA4BD58BCE5746C5E0809 /* Beacon.swift */; };
 		B8DCAB3AEEB162392154364E /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCAD336C5DBF3DDCE48513 /* Device.swift */; };
-		D4FEB414213EB6E400EFDA9B /* KeyboardManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4FEB413213EB6E400EFDA9B /* KeyboardManager.framework */; };
+		D453130E268B053B00477134 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D453130D268B053B00477134 /* Alamofire */; };
+		D4531311268B058F00477134 /* KeyboardManager in Frameworks */ = {isa = PBXBuildFile; productRef = D4531310268B058F00477134 /* KeyboardManager */; };
+		D4531318268B074300477134 /* KalmanFilter.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4531317268B074300477134 /* KalmanFilter.xcframework */; };
+		D4531319268B074300477134 /* KalmanFilter.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D4531317268B074300477134 /* KalmanFilter.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EF55C62D213D87240088329C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C62C213D87240088329C /* AppDelegate.swift */; };
 		EF55C62F213D87240088329C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C62E213D87240088329C /* ViewController.swift */; };
 		EF55C632213D87240088329C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF55C630213D87240088329C /* Main.storyboard */; };
 		EF55C634213D87290088329C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF55C633213D87290088329C /* Assets.xcassets */; };
 		EF55C637213D87290088329C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF55C635213D87290088329C /* LaunchScreen.storyboard */; };
 		EF55C65D213D89480088329C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF55C65C213D89480088329C /* CoreLocation.framework */; };
-		EF55C65F213D89620088329C /* KalmanFilter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF55C65E213D89620088329C /* KalmanFilter.framework */; };
-		EF55C661213D89670088329C /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF55C660213D89670088329C /* Alamofire.framework */; };
 		EF55C665213D89FE0088329C /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C664213D89FE0088329C /* ApiManager.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D453131A268B074300477134 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D4531319268B074300477134 /* KalmanFilter.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B8DCA4BD58BCE5746C5E0809 /* Beacon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Beacon.swift; sourceTree = "<group>"; };
 		B8DCA5D550ED61D609FD3091 /* Signal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Signal.swift; sourceTree = "<group>"; };
 		B8DCAD336C5DBF3DDCE48513 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
-		D4FEB413213EB6E400EFDA9B /* KeyboardManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeyboardManager.framework; path = Carthage/Build/iOS/KeyboardManager.framework; sourceTree = "<group>"; };
+		D4531317268B074300477134 /* KalmanFilter.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = KalmanFilter.xcframework; sourceTree = "<group>"; };
 		EF55C629213D87240088329C /* HHLocation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HHLocation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF55C62C213D87240088329C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EF55C62E213D87240088329C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -35,8 +50,6 @@
 		EF55C636213D87290088329C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EF55C638213D87290088329C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF55C65C213D89480088329C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		EF55C65E213D89620088329C /* KalmanFilter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KalmanFilter.framework; path = Carthage/Build/iOS/KalmanFilter.framework; sourceTree = "<group>"; };
-		EF55C660213D89670088329C /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		EF55C664213D89FE0088329C /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -45,10 +58,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D453130E268B053B00477134 /* Alamofire in Frameworks */,
+				D4531318268B074300477134 /* KalmanFilter.xcframework in Frameworks */,
 				EF55C65D213D89480088329C /* CoreLocation.framework in Frameworks */,
-				D4FEB414213EB6E400EFDA9B /* KeyboardManager.framework in Frameworks */,
-				EF55C65F213D89620088329C /* KalmanFilter.framework in Frameworks */,
-				EF55C661213D89670088329C /* Alamofire.framework in Frameworks */,
+				D4531311268B058F00477134 /* KeyboardManager in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,9 +113,7 @@
 		EF55C65B213D89480088329C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D4FEB413213EB6E400EFDA9B /* KeyboardManager.framework */,
-				EF55C660213D89670088329C /* Alamofire.framework */,
-				EF55C65E213D89620088329C /* KalmanFilter.framework */,
+				D4531317268B074300477134 /* KalmanFilter.xcframework */,
 				EF55C65C213D89480088329C /* CoreLocation.framework */,
 			);
 			name = Frameworks;
@@ -118,13 +129,17 @@
 				EF55C625213D87240088329C /* Sources */,
 				EF55C626213D87240088329C /* Frameworks */,
 				EF55C627213D87240088329C /* Resources */,
-				EF55C65A213D88F40088329C /* Carthage */,
+				D453131A268B074300477134 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = HHLocation;
+			packageProductDependencies = (
+				D453130D268B053B00477134 /* Alamofire */,
+				D4531310268B058F00477134 /* KeyboardManager */,
+			);
 			productName = HHLocation;
 			productReference = EF55C629213D87240088329C /* HHLocation.app */;
 			productType = "com.apple.product-type.application";
@@ -158,6 +173,10 @@
 				Base,
 			);
 			mainGroup = EF55C620213D87240088329C;
+			packageReferences = (
+				D453130C268B053B00477134 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				D453130F268B058F00477134 /* XCRemoteSwiftPackageReference "KeyboardManager" */,
+			);
 			productRefGroup = EF55C62A213D87240088329C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -179,29 +198,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		EF55C65A213D88F40088329C /* Carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/KalmanFilter.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/KeyboardManager.framework",
-			);
-			name = Carthage;
-			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/KalmanFilter.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/KeyboardManager.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		EF55C625213D87240088329C /* Sources */ = {
@@ -514,6 +510,38 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D453130C268B053B00477134 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.7.3;
+			};
+		};
+		D453130F268B058F00477134 /* XCRemoteSwiftPackageReference "KeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/alphatroya/KeyboardManager";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D453130D268B053B00477134 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D453130C268B053B00477134 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		D4531310268B058F00477134 /* KeyboardManager */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D453130F268B058F00477134 /* XCRemoteSwiftPackageReference "KeyboardManager" */;
+			productName = KeyboardManager;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EF55C621213D87240088329C /* Project object */;
 }
