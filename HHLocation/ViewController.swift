@@ -332,7 +332,7 @@ extension ViewController: ApiManagerDelegate {
     }
 
     func presentAlert(title: String, message: String, reloadFunction: ((UIAlertAction) -> Void)?) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
 
         if reloadFunction != nil {
             alert.addAction(UIAlertAction(title: "Refresh", style: .default, handler: reloadFunction))

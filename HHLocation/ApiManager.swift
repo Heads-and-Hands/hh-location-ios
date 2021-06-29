@@ -105,7 +105,7 @@ class ApiManager {
     }
 }
 
-protocol ApiManagerDelegate: class {
+protocol ApiManagerDelegate: AnyObject {
     func updateBeaconsParameters(beaconsParameters: [Beacon])
     func presentAlert(title: String, message: String, reloadFunction: ((UIAlertAction) -> Void)?)
 }
