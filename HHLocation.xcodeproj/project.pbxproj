@@ -12,7 +12,10 @@
 		B8DCAB3AEEB162392154364E /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCAD336C5DBF3DDCE48513 /* Device.swift */; };
 		D453130E268B053B00477134 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D453130D268B053B00477134 /* Alamofire */; };
 		D4531311268B058F00477134 /* KeyboardManager in Frameworks */ = {isa = PBXBuildFile; productRef = D4531310268B058F00477134 /* KeyboardManager */; };
-		D4531318268B074300477134 /* KalmanFilter.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4531317268B074300477134 /* KalmanFilter.xcframework */; };
+		D4756AFE268B11A30019905F /* KalmanFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4756AFA268B11A30019905F /* KalmanFilter.swift */; };
+		D4756AFF268B11A30019905F /* KalmanFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4756AFB268B11A30019905F /* KalmanFilterType.swift */; };
+		D4756B00268B11A30019905F /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4756AFC268B11A30019905F /* Matrix.swift */; };
+		D4756B01268B11A30019905F /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4756AFD268B11A30019905F /* DoubleExtension.swift */; };
 		EF55C62D213D87240088329C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C62C213D87240088329C /* AppDelegate.swift */; };
 		EF55C62F213D87240088329C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C62E213D87240088329C /* ViewController.swift */; };
 		EF55C632213D87240088329C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF55C630213D87240088329C /* Main.storyboard */; };
@@ -26,7 +29,10 @@
 		B8DCA4BD58BCE5746C5E0809 /* Beacon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Beacon.swift; sourceTree = "<group>"; };
 		B8DCA5D550ED61D609FD3091 /* Signal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Signal.swift; sourceTree = "<group>"; };
 		B8DCAD336C5DBF3DDCE48513 /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
-		D4531317268B074300477134 /* KalmanFilter.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = KalmanFilter.xcframework; sourceTree = "<group>"; };
+		D4756AFA268B11A30019905F /* KalmanFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KalmanFilter.swift; sourceTree = "<group>"; };
+		D4756AFB268B11A30019905F /* KalmanFilterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KalmanFilterType.swift; sourceTree = "<group>"; };
+		D4756AFC268B11A30019905F /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		D4756AFD268B11A30019905F /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
 		EF55C629213D87240088329C /* HHLocation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HHLocation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF55C62C213D87240088329C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EF55C62E213D87240088329C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -44,7 +50,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D453130E268B053B00477134 /* Alamofire in Frameworks */,
-				D4531318268B074300477134 /* KalmanFilter.xcframework in Frameworks */,
 				EF55C65D213D89480088329C /* CoreLocation.framework in Frameworks */,
 				D4531311268B058F00477134 /* KeyboardManager in Frameworks */,
 			);
@@ -61,6 +66,17 @@
 				B8DCAD336C5DBF3DDCE48513 /* Device.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		D4756AF9268B11A30019905F /* KalmanFilter */ = {
+			isa = PBXGroup;
+			children = (
+				D4756AFA268B11A30019905F /* KalmanFilter.swift */,
+				D4756AFB268B11A30019905F /* KalmanFilterType.swift */,
+				D4756AFC268B11A30019905F /* Matrix.swift */,
+				D4756AFD268B11A30019905F /* DoubleExtension.swift */,
+			);
+			path = KalmanFilter;
 			sourceTree = "<group>";
 		};
 		EF55C620213D87240088329C = {
@@ -83,6 +99,7 @@
 		EF55C62B213D87240088329C /* HHLocation */ = {
 			isa = PBXGroup;
 			children = (
+				D4756AF9268B11A30019905F /* KalmanFilter */,
 				EF55C62C213D87240088329C /* AppDelegate.swift */,
 				EF55C62E213D87240088329C /* ViewController.swift */,
 				EF55C664213D89FE0088329C /* ApiManager.swift */,
@@ -98,7 +115,6 @@
 		EF55C65B213D89480088329C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D4531317268B074300477134 /* KalmanFilter.xcframework */,
 				EF55C65C213D89480088329C /* CoreLocation.framework */,
 			);
 			name = Frameworks;
@@ -188,10 +204,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4756B01268B11A30019905F /* DoubleExtension.swift in Sources */,
+				D4756AFE268B11A30019905F /* KalmanFilter.swift in Sources */,
 				EF55C665213D89FE0088329C /* ApiManager.swift in Sources */,
+				D4756B00268B11A30019905F /* Matrix.swift in Sources */,
 				EF55C62F213D87240088329C /* ViewController.swift in Sources */,
 				EF55C62D213D87240088329C /* AppDelegate.swift in Sources */,
 				B8DCA00362FEC47986DA7DA6 /* Signal.swift in Sources */,
+				D4756AFF268B11A30019905F /* KalmanFilterType.swift in Sources */,
 				B8DCA2D046ECA65B69FA42E2 /* Beacon.swift in Sources */,
 				B8DCAB3AEEB162392154364E /* Device.swift in Sources */,
 			);

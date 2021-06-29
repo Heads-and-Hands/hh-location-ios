@@ -1,5 +1,5 @@
 //
-//  ViewCo?ntroller.s?wift
+//  ViewController.swift
 //  HHLocation
 //
 //  Created by HeadsAndHands on 03.09.2018.
@@ -7,7 +7,6 @@
 //
 
 import CoreLocation
-import KalmanFilter
 import KeyboardManager
 import UIKit
 
