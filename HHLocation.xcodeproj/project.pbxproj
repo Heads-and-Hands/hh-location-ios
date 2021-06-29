@@ -13,7 +13,6 @@
 		D453130E268B053B00477134 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D453130D268B053B00477134 /* Alamofire */; };
 		D4531311268B058F00477134 /* KeyboardManager in Frameworks */ = {isa = PBXBuildFile; productRef = D4531310268B058F00477134 /* KeyboardManager */; };
 		D4531318268B074300477134 /* KalmanFilter.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4531317268B074300477134 /* KalmanFilter.xcframework */; };
-		D4531319268B074300477134 /* KalmanFilter.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D4531317268B074300477134 /* KalmanFilter.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EF55C62D213D87240088329C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C62C213D87240088329C /* AppDelegate.swift */; };
 		EF55C62F213D87240088329C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C62E213D87240088329C /* ViewController.swift */; };
 		EF55C632213D87240088329C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF55C630213D87240088329C /* Main.storyboard */; };
@@ -22,20 +21,6 @@
 		EF55C65D213D89480088329C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF55C65C213D89480088329C /* CoreLocation.framework */; };
 		EF55C665213D89FE0088329C /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF55C664213D89FE0088329C /* ApiManager.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		D453131A268B074300477134 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				D4531319268B074300477134 /* KalmanFilter.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B8DCA4BD58BCE5746C5E0809 /* Beacon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Beacon.swift; sourceTree = "<group>"; };
@@ -129,7 +114,6 @@
 				EF55C625213D87240088329C /* Sources */,
 				EF55C626213D87240088329C /* Frameworks */,
 				EF55C627213D87240088329C /* Resources */,
-				D453131A268B074300477134 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
